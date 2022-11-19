@@ -1,0 +1,29 @@
+#include <Servo.h>; 
+
+Servo myservo; // 创建一个名为 myservo 的伺服电机实例（名称可随你喜欢命名）
+int potpin = 1; // 定义 potpin 变量，用于定义模拟引脚口编号，0则为主板上A0的引脚
+int val; // 定义 val 变量， 用于存储电位器的数值
+int angle; // 定义 angle 变量， 用于储存角度值
+
+// 初始化
+void setup() { 
+  pinMode(7, OUTPUT);
+  myservo.attach(10);  // 配置myservo实例的引脚为9
+  Serial.begin(9600);  //设置波特率，这是串口应用中很重要的数字
+}
+
+// 主程序
+void loop() { 
+  val = analogRead(potpin); // 通过analogRead函数，获取指定模拟口的数值
+  angle = map(val, 0, 1023, 0, 180); //map()是等比映射函数，把val的数值等比映射为0-180度
+  myservo.write(angle); // 控制舵机转动到相应的角度位置。
+  tone(7, val,500);
+
+  Serial.print("val: ");  // 从串口中输出以下数据，方便观察
+  Serial.print(val);
+  Serial.print(" | ");
+  Serial.print("angle: ");
+  Serial.println(angle);
+
+  delay(50); // 等待15毫秒，给舵机移动到指定位置
+}
